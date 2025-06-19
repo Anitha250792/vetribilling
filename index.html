@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vetri Market</title>
+  <link rel="icon" type="image/png" href="images/Home.png">
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="images/logo.webp" alt="Logo" />
+        <h2>Vetri Market</h2>
+      </div>
+      <nav>
+        <a href="index.html"><span><img src="images/Home.png"></span> Home</a>
+        <a href="products.html" class="active"><span><img src="images/products.png"></span> Products</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+ <div class="customer-details">
+  <h2>Customer Details</h2>
+
+  <!-- Top Row: Name & Contact -->
+  <div class="customer-info-row">
+    <div class="info-block">
+      <label>CUSTOMER NAME:</label>
+      <div class="info-content">
+        <span id="custName">Priya</span>
+        <img src="images/edit.png" class="icon" title="Edit Name" onclick="editField('custName', 'CUSTOMER NAME')" />
+      </div>
+    </div>
+    <div class="info-block">
+      <label>CONTACT NO:</label>
+      <div class="info-content">
+        <span id="custContact">8910866713</span>
+        <img src="images/edit.png" class="icon" title="Edit Contact" onclick="editField('custContact', 'CONTACT NO')" />
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Bottom Row: Address & Date -->
+  <div class="customer-info-row">
+    <!-- Address -->
+<div class="info-block">
+  <label>ADDRESS:</label>
+  <div class="info-content">
+    <span id="custAddress">12, Cross Cut Road, Chennai.</span>
+    <img src="images/edit.png" class="icon" title="Edit Address" onclick="editField('custAddress', 'ADDRESS')" />
+    <img src="images/delete.png" class="icon" title="Delete Address" onclick="deleteField('custAddress', 'ADDRESS')" />
+  </div>
+</div>
+
+<!-- Date -->
+<div class="info-block">
+  <label>DATE:</label>
+  <div class="info-content">
+    <span id="custDate">12/07/24</span>
+    <img src="images/edit.png" class="icon" title="Edit Date" onclick="editDateField('custDate')" />
+    <img src="images/delete.png" class="icon" title="Delete Date" onclick="deleteField('custDate', 'DATE')" />
+  </div>
+</div>
+
+  </div>
+</div>
+      <div class="search-add">
+        <input type="text" placeholder="🔍 Search" />
+        <a href="products.html"><button class="add-btn"><img src="images/Add to cart.png"> Add Item</button></a>
+      </div>
+
+      <div class="product-grid">
+        <div class="grid-header">
+          <span>ITEM DETAILS</span>
+          <span>QUANTITY</span>
+          <span>RATE</span>
+          <span>TAX</span>
+          <span>AMOUNT</span>
+        </div>
+        <div class="product-list" id="productList">
+          <!-- Products inserted by JS -->
+        </div>
+      </div>
+
+      <a href="billing.html"><button class="next-btn">Next</button></a>
+    </main>
+  </div>
+  
+</body>
+</html>

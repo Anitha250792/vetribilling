@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vetri Market</title>
+  <link rel="icon" type="image/png" href="images/Home.png">
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+</head>
+
+  <style>
+
+
+    .success-container {
+      text-align: center;
+    }
+
+    .success-container img {
+      width: 400px;
+      margin-bottom: 20px;
+      margin-left: 200px;
+    }
+
+    .success-container h1 {
+      font-size: 2em;
+      color: #111;
+      text-align: center;
+      margin-left: 200px;
+    }
+
+    .success-container p {
+      color: #555;
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 1.5em;
+      margin-left: 200px;
+    }
+
+    .info-box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      background: #d8f8dc;
+      border-radius: 12px;
+      padding: 20px;
+      width: 100%;
+      min-width: 600px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-left: 150px;
+    }
+
+    .info-item {
+      flex: 1 1 200px;
+      margin: 10px;
+      text-align: left;
+    }
+
+    .info-item strong {
+      display: block;
+      font-size: 0.95em;
+      margin-bottom: 5px;
+      color: #000;
+    }
+
+    .info-item span {
+      color: #333;
+    }
+
+    .download-btn {
+      background-color: #ff884d;
+      color: white;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-top: 15px;
+    }
+
+    .download-btn:hover {
+      background-color: #e67634;
+    }
+
+    @media (max-width: 600px) {
+      .info-box {
+        flex-direction: column;
+        align-items: center;
+      }
+      .info-item {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+
+<body>
+     <div class="container">
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="images/logo.webp" alt="Logo" />
+        <h2>Vetri Market</h2>
+      </div>
+      <nav>
+        <a href="index.html"><span><img src="images/Home.png"></span> Home</a>
+        <a href="products.html" class="active"><span><img src="images/products.png"></span> Products</a>
+      </nav>
+    </aside>
+  <div class="success-container">
+    <img src="images/completed.png" alt="Order Success" />
+    <h1>Your Order Completed</h1>
+    <p>Thank you. Your order has been received</p>
+
+    <div class="info-box">
+      <div class="info-item">
+        <strong>Order ID</strong>
+        <span id="orderId">--</span>
+      </div>
+      <div class="info-item">
+        <strong>Name</strong>
+        <span id="custName">--</span>
+      </div>
+      <div class="info-item">
+        <strong>Phone Number</strong>
+        <span id="custContact">--</span>
+      </div>
+      
+      <div class="info-item" style="flex-basis: 100%; text-align: right;">
+        <button class="download-btn" onclick="downloadInvoice()">Download Invoice</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Load customer info from localStorage
+    document.getElementById("custName").textContent = localStorage.getItem("custName") || "Not available";
+    document.getElementById("custContact").textContent = localStorage.getItem("custContact") || "Not available";
+   
+    // Use same Order ID as billing
+    const orderId = localStorage.getItem("orderId") || Math.floor(100 + Math.random() * 900);
+    document.getElementById("orderId").textContent = orderId;
+    localStorage.setItem("orderId", orderId); // persist it
+
+    function downloadInvoice() {
+      window.location.href = "invoice.html";
+    }
+  </script>
+</body>
+</html>

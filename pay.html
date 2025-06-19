@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vetri Market</title>
+  <link rel="icon" type="image/png" href="images/Home.png">
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+</head>
+
+  <style>
+    
+    .main {
+      flex: 1;
+      padding: 30px;
+      background: #fff;
+    }
+
+    .flex-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .box {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .orange-box {
+      background: #ff9248;
+      color: #fff;
+    }
+
+    .purple-box {
+      background: #dba0fc;
+      color: #000;
+    }
+
+    .payment-section {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .payment-method {
+      border: 2px solid #007bff;
+      border-radius: 6px;
+      padding: 5px 15px;
+      background: #f9f9f9;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    input[type="number"] {
+      padding: 5px 10px;
+      font-size: 16px;
+      width: 120px;
+    }
+
+    .summary {
+      margin-top: 30px;
+      font-size: 16px;
+    }
+
+    .summary div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .total {
+      font-size: 20px;
+      font-weight: bold;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+    }
+
+    .buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .buttons button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .save-btn {
+      background: #ff7f50;
+      color: white;
+    }
+
+    .pay-btn {
+      background: #007bff;
+      color: white;
+    }
+
+    @media(max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      aside {
+        width: 100%;
+        min-height: auto;
+      }
+      .main {
+        padding: 20px;
+      }
+    }
+  </style>
+
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="images/logo.webp" alt="Logo" />
+        <h2>Vetri Market</h2>
+      </div>
+      <nav>
+        <a href="index.html"><span><img src="images/Home.png"></span> Home</a>
+        <a href="products.html" class="active"><span><img src="images/products.png"></span> Products</a>
+      </nav>
+    </aside>
+
+  <div class="main">
+    <div class="flex-row">
+      <div>
+        <p>DATE: <span id="date"></span></p>
+        <p>TIME: <span id="time"></span></p>
+        <p>BILL NO: <strong id="billNo"></strong></p>
+      </div>
+      <div>
+        <button style="background: #007bff; color:white; padding: 5px 15px; border-radius: 5px;">📄 Draft</button>
+      </div>
+    </div>
+
+    <div class="flex-row">
+      <div class="box orange-box">
+        Collected Amount ₹<span id="collected">0</span>
+      </div>
+      <div class="box purple-box">
+        Balance ₹<span id="balance">0</span>
+      </div>
+    </div>
+
+    <div class="payment-section">
+      <div class="payment-method">💰 CASH</div>
+      <div class="payment-method">💳 CARD</div>
+      <input type="number" id="receivedInput" value="0" oninput="updateBalance()" />
+    </div>
+
+    <div class="summary">
+      <div><span>Sub Total</span><span>₹<span id="subTotal">0</span></span></div>
+      <div><span>Tax</span><span>₹<span id="tax">0</span></span></div>
+      <div><span>Round Off</span><span>₹<span id="roundOff">0</span></span></div>
+      <div class="total"><span>Total</span><span>₹<span id="total">0</span></span></div>
+    </div>
+
+    <div class="buttons">
+      <button class="save-btn" onclick="alert('Bill Saved!')">Save</button>
+      <button class="pay-btn" onclick="payNow()">Payment</button>
+    </div>
+  </div>
+
+  <script>
+    // Load values
+    const billAmount = parseFloat(localStorage.getItem("billingTotal")) || 0;
+    const taxAmount = Math.round(billAmount * 0.2); // 20% tax
+    const roundOff = 0;
+    const totalAmount = billAmount + taxAmount + roundOff;
+
+    // Set initial UI
+    document.getElementById("subTotal").textContent = billAmount;
+    document.getElementById("tax").textContent = taxAmount;
+    document.getElementById("roundOff").textContent = roundOff;
+    document.getElementById("total").textContent = totalAmount;
+    document.getElementById("collected").textContent = totalAmount;
+    document.getElementById("receivedInput").value = totalAmount;
+    document.getElementById("balance").textContent = 0;
+
+    // Generate random bill number
+    document.getElementById("billNo").textContent = Math.floor(Math.random() * 90000 + 10000);
+
+    // Set date and time
+    const now = new Date();
+    document.getElementById("date").textContent = now.toLocaleDateString();
+    document.getElementById("time").textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    function updateBalance() {
+      const received = parseFloat(document.getElementById("receivedInput").value) || 0;
+      const balance = (received - totalAmount).toFixed(2);
+      document.getElementById("balance").textContent = balance >= 0 ? balance : 0;
+    }
+
+    
+    function payNow() {
+  const received = parseFloat(document.getElementById("receivedInput").value) || 0;
+  if (received < totalAmount) {
+    alert("Insufficient amount received!");
+    return;
+  }
+
+  alert("Payment successful!");
+  localStorage.removeItem("vetriCart");
+
+  // Optional: delay to simulate processing before redirect
+  setTimeout(() => {
+    window.location.href = "thankyou.html";
+  }, 1000);
+}
+
+  </script>
+</body>
+</html>

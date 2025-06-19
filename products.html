@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products - Vetri Market</title>
+  <link rel="icon" type="image/png" href="images/Home.png">
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="images/logo.webp" alt="Logo" />
+        <h2>Vetri Market</h2>
+      </div>
+      <nav>
+        <a href="index.html"><span><img src="images/Home.png"></span> Home</a>
+        <a href="products.html" class="active"><span><img src="images/products.png"></span> Products</a>
+      </nav>
+    </aside>
+    <style>
+        .container {
+  display: flex;
+  width: 100%;
+}
+
+.main {
+  flex: 1;
+  padding: 40px;
+  background-color: #fff;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.product-table th, .product-table td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.product-table th {
+  color: blue;
+}
+
+.product-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fafafa;
+  margin: 8px 0;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.product-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.next-btn {
+  background-color: #ff7b00;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+    </style>
+    <main class="main">
+      <h1>Products</h1>
+
+      <table class="product-table">
+        <thead>
+          <tr>
+            <th>ITEM DETAILS</th>
+            <th>QUANTITY</th>
+            <th>RATE</th>
+            <th>TAX</th>
+            <th>AMOUNT</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="productBody">
+          <!-- JS will populate rows here -->
+        </tbody>
+      </table>
+
+      <a href="billing.html"><button class="next-btn">Next</button></a>
+    </main>
+  </div>
+
+ <script>
+  const products = [
+    { name: 'Dairy Milk', quantity: 2, rate: 100, tax: 20 },
+    { name: 'Millet Noodles', quantity: 1, rate: 30, tax: 10 },
+    { name: 'Wheat Flour', quantity: 2, rate: 100, tax: 20 },
+    { name: 'Maida', quantity: 1, rate: 30, tax: 10 },
+    { name: 'Chili Powder', quantity: 2, rate: 100, tax: 20 },
+    { name: 'Biryani Masala', quantity: 1, rate: 30, tax: 10 }
+  ];
+
+  const productBody = document.getElementById('productBody');
+
+  products.forEach((item, index) => {
+    const amount = item.rate + item.tax;
+    const isNumeric = typeof item.quantity === 'number';
+    const id = `qty-${index}`;
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${item.name}</td>
+      <td>
+        <div style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+          ${isNumeric ? `<img src="images/minus.jpg" style="width: 18px; cursor: pointer;" onclick="changeQty('${id}', -1)">` : ''}
+          <span id="${id}" style="min-width: 30px; text-align: center;">${item.quantity}</span>
+          ${isNumeric ? `<img src="images/plus.jpg" style="width: 18px; cursor: pointer;" onclick="changeQty('${id}', 1)">` : ''}
+        </div>
+      </td>
+      <td>${item.rate}</td>
+      <td>${item.tax}</td>
+      <td>${amount}</td>
+      <td>
+        <img src="images/Add to cart.png" alt="Cart" style="width: 22px; cursor: pointer;" onclick="addToCart(${index}, '${id}')">
+      </td>
+    `;
+    productBody.appendChild(row);
+  });
+
+  function changeQty(id, delta) {
+    const span = document.getElementById(id);
+    let current = parseInt(span.textContent);
+    if (isNaN(current)) return;
+    const updated = Math.max(1, current + delta); // no 0 quantity
+    span.textContent = updated;
+  }
+
+  function addToCart(index, qtyId) {
+    const qty = parseInt(document.getElementById(qtyId).textContent);
+    const item = products[index];
+    const cartItem = {
+      name: item.name,
+      quantity: qty,
+      rate: item.rate,
+      tax: item.tax
+    };
+
+    let cart = JSON.parse(localStorage.getItem('vetriCart')) || [];
+
+    // Check if item already in cart → update quantity
+    const existing = cart.find(p => p.name === cartItem.name);
+    if (existing) {
+      existing.quantity = parseInt(existing.quantity) + qty;
+    } else {
+      cart.push(cartItem);
+    }
+
+    localStorage.setItem('vetriCart', JSON.stringify(cart));
+    alert(`${item.name} added to cart!`);
+  }
+
+  
+</script>
+
+</body>
+</html>
